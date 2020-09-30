@@ -32,32 +32,38 @@ function getToken(user){
         },
         body: JSON.stringify(user)
     })
-        .then(response => {
-            if (response.ok){
-                parseJSON(response)  
-            } else {
-                result = parseJSON(response)
-                const errorMessage = document.querySelector('#login-error-message')
-                console.log(result)
-                // errorMessage.innerText = response.errors
-            }
-        })
+        .then(parseJSON)
         .then(result => {
+            console.log(result.token)
             localStorage.setItem('token', result.token)
             showProfile()
         })
- 
+        // .then(response => {
+        //     if(response.ok){
+        //         result = parseJSON(response)
+        //         console.log(result)
+        //         localStorage.setItem('token', result.token)
+        //         showProfile()
+        //     } else {
+        //         console.log(response)
+        //         result = parseJSON(response)
+        //         console.log(result)
+        //         const errorMessage = document.querySelector('#login-error-message')
+        //         errorMessage.innerText = 'Please login to proceed'
+        //     }
     }
 
 function showProfile(){
     fetch(usersURL, { headers })
         .then(response => {
-            console.log(`${localStorage.token}`)
             if(response.ok){
                 window.location.href = '/profile.html'
             } else {
+                console.log(response)
+                result = parseJSON(response)
+                console.log(result)
                 const errorMessage = document.querySelector('#login-error-message')
-                errorMessage.innerText = 'Please login to proceed'
+                errorMessage.innerText = 'Incorrect Username or Password'
             }
         })
 }

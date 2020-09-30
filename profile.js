@@ -3,16 +3,17 @@
 //     popup.classList.toggle("show");
 //   }
 console.log(localStorage.token)
+
 const baseURL = 'http://localhost:3000';
 const profileURL = `${baseURL}/profile`;
 const lovedOnesURL = `${baseURL}/loved_ones`;
 
-// console.log(request.headers["Authorization"])
+const logoutButton = document.querySelector('#logout-button')
+logoutButton.addEventListener('click', logoutUser)
 
 const lovedOnesSection = document.querySelector('#loved-ones-section')
 const addPersonForm = document.querySelector('#new-person-form')
 addPersonForm.addEventListener = ('submit', getPersonInfo);
-
 
 const auth_headers = { 
     'Content-Type': 'application/json',
@@ -21,6 +22,11 @@ const auth_headers = {
 
 function parseJSON(response) {
     return response.json()
+}
+
+function logoutUser(event){
+    localStorage.clear()
+
 }
 
 fetch(profileURL, { auth_headers })
@@ -70,9 +76,6 @@ function displayPerson(person){
     const title = document.createElement('h2')
     title.textContent = `${person.name} - ${person.relationship}`
 
-    const image = document.createElement('img')
-    image.src = person.image_url
-
     const ageText = document.createElement('h3')
     const age = "UPDATE WITH CALCULATION"
     ageText.textContent = `Age ${age}`
@@ -93,7 +96,7 @@ function displayPerson(person){
     const gender = document.createElement('p')
     gender.textContent = person.gender
 
-    personCard.append(title, gender, image, ageText, birthday, address, cityState)
+    personCard.append(title, gender, ageText, birthday, address, cityState)
     lovedOnesSection.append(personCard)
 }
 

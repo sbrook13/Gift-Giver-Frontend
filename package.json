@@ -1,0 +1,24 @@
+{
+  "name": "present-project-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:styles": "node-sass -w app.scss app.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbrook13/Gift-Giver-Frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sbrook13/Gift-Giver-Frontend/issues"
+  },
+  "homepage": "https://github.com/sbrook13/Gift-Giver-Frontend#readme",
+  "dependencies": {
+    "node-sass": "^4.14.1"
+  }
+}

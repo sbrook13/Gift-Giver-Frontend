@@ -2,7 +2,6 @@
 //     var popup = document.querySelector('#person-2-info');
 //     popup.classList.toggle("show");
 //   }
-console.log(localStorage.token)
 
 const baseURL = 'http://localhost:3000';
 const userURL = `${baseURL}/users`;

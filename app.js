@@ -1,6 +1,7 @@
 const baseURL = 'http://localhost:3000';
 const loginURL = `${baseURL}/login`;
 const usersURL = `${baseURL}/users`;
+const profileURL = `${baseURL}/profile`;
 
 const loginForm = document.querySelector('#login-form')
 loginForm.addEventListener('submit', loginUser);
@@ -8,7 +9,7 @@ loginForm.addEventListener('submit', loginUser);
 const newUserForm = document.querySelector('#create-user')
 newUserForm.addEventListener('submit', createUser)
 
-const headers = { 
+const auth_headers = { 
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.token}`
 }
@@ -20,7 +21,8 @@ function loginUser(event){
     const password = loginInfo.get('password')
     const user = { username, password }
     console.log(user)
-    getToken(user)    
+    getToken(user) 
+       
 }
 
 function getToken(user){
@@ -32,7 +34,7 @@ function getToken(user){
         },
         body: JSON.stringify(user)
     })
-        .then(parseJSON)
+        .then(response => response.json())
         .then(result => {
             console.log(result.token)
             localStorage.setItem('token', result.token)
@@ -54,7 +56,7 @@ function getToken(user){
     }
 
 function showProfile(){
-    fetch(usersURL, { headers })
+    fetch(profileURL, { headers: auth_headers })
         .then(response => {
             if(response.ok){
                 window.location.href = '/profile.html'
@@ -92,16 +94,10 @@ function createUser(event){
         body: JSON.stringify(user)
     })
         .then(parseJSON)
-        .then(newUser => newUserToken(newUser))
+        .then(newUserToken)
         .then(showProfile)
 }
 
 function newUserToken(newUser){
     localStorage.setItem('token', newUser.token)
-}
-
-function getUsers(){
-    fetch(usersURL)
-        .then(parseJSON)
-        .then(response => console.log(response))
 }

@@ -5,23 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gift Giver</title>
     <script defer src="app.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="app.css" />
 </head>
 <body>
     <h1>BE THE BEST GIFT GIVER</h1>
-    <a href="profile.html">Your Profile</a>
-    <form method="POST" id="login-form">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <input type="submit" id="login-button" value="Login">
-    </form>
-    <form method="POST" id="create-user">
-        <input type="text" name="name" placeholder="Your Name">
-        <input type="text" name="email" placeholder="Your Email">
-        <input type="text" name="username" placeholder="Create Username">
-        <input type="password" name="password" placeholder="Enter password 6-15 characters">
-        <input type="submit" value="Create User">
-    </form>
+    <section id="login-section">
+        <h2>Login</h2>
+        <form method="POST" id="login-form">
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="password">
+            <input type="submit" id="login-button" value="Login">
+        </form>
+    </section>
+    <section id="new-user-section">
+        <h2>New User</h2>
+        <form method="POST" id="create-user">
+            <input type="text" name="name" placeholder="Your Name">
+            <input type="text" name="email" placeholder="Your Email">
+            <input type="text" name="username" placeholder="Create Username">
+            <input type="password" name="password" placeholder="Enter password 6-15 characters">
+            <label>Password must be between 6 - 15 characters</label>
+            <input type="submit" value="Create User">
+        </form>
+    </section>
     <p id="login-error-message"></p>
 </body>
 </html>

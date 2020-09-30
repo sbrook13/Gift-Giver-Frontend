@@ -1,2 +1,13 @@
 h1 {
   color: red; }
+
+#create-user {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+
+section {
+    margin: 3rem;
+}

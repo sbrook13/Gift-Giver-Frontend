@@ -8,38 +8,49 @@ const userURL = `${baseURL}/users`;
 const profileURL = `${baseURL}/profile`;
 const lovedOnesURL = `${baseURL}/loved_ones`;
 
-const logoutButton = document.querySelector('#logout-button')
-logoutButton.addEventListener('click', logoutUser)
-
-const lovedOnesSection = document.querySelector('#loved-ones-section')
-const addPersonForm = document.querySelector('#new-person-form')
-addPersonForm.addEventListener = ('submit', getPersonInfo);
-
 const auth_headers = { 
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.token}`
 }
-console.log(auth_headers)
+
+const logoutButton = document.querySelector('#logout-button')
+logoutButton.addEventListener('click', logoutUser)
+
+function logoutUser(){
+    localStorage.clear()
+    window.location.href = '/'
+}
+
+const addPersonForm = document.querySelector('#new-person-form')
+addPersonForm.addEventListener = ('submit', getPersonInfo);
+
+const lovedOnesSection = document.querySelector('#loved-ones-section')
 
 function parseJSON(response) {
     return response.json()
 }
 
-function logoutUser(event){
-    localStorage.clear()
-    window.location.href = '/'
-}
-
 fetch(profileURL, { headers: auth_headers })
     .then(response => response.json())
     .then(user => {
-        const header = document.querySelector('.welcome')
-        const welcomeMessage = document.createElement('h2')
+        console.log(user.loved_ones)
+        const welcomeMessage = document.querySelector('.welcome')
         welcomeMessage.textContent = `Hello ${user.name}`
-        header.append(welcomeMessage)
 
         user.loved_ones.forEach(displayPerson)
     })
+
+for (let i = 0; i < addPersonForm.length; i++) {
+    addPersonForm[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.children;
+    if (content.style.maxHeight){
+        content.style.maxHeight = null;
+    } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+    }
+    });
+}
 
 function getPersonInfo(event){
     event.preventDefault()
@@ -53,10 +64,8 @@ function getPersonInfo(event){
     const mailing_city = formData.get('mailing_city')
     const mailing_state = formData.get('mailing_state')
     const mailing_zip = formData.get('mailing_zip')
-    const image_url = formData.get('image_url')
-    const person = { name, relationship, birthday, gender, mailing_address1, mailing_address2, mailing_city, mailing_state, mailing_zip, image_url }
-    console.log(person)
-    // persistPerson(person)
+    const person = { name, relationship, birthday, gender, mailing_address1, mailing_address2, mailing_city, mailing_state, mailing_zip}
+    persistPerson(person)
 
 }
 
@@ -70,17 +79,76 @@ function persistPerson(person){
 }
 
 function displayPerson(person){
+    console.log(person)
     const personCard = document.createElement('div')
     personCard.classList.add('person-card')
     personCard.setAttribute("id", `person-info-${person.id}`)
+    personCard.addEventListener('click', event => showDetailsCard(event, person))
 
+    addTitle(person, personCard)
+    calculateAge(person, personCard)
+    addGender(person, personCard)
+
+    
+    lovedOnesSection.append(personCard)
+}
+
+function addTitle(person, personCard){
     const title = document.createElement('h2')
     title.textContent = `${person.name} - ${person.relationship}`
+    personCard.append(title)
+}
 
+function addGender(person, personCard){
+    const gender = document.createElement('p')
+    gender.textContent = person.gender
+    personCard.append(gender)
+}
+
+function calculateAge(person, personCard){
+    const today = new Date()
+    const bday = new Date(person.birthday)
+    const ageDif = today - bday
+    const ageDate = new Date(ageDif)
+    const age = Math.abs(ageDate.getUTCFullYear()-1970)
+    addAge(age, personCard)
+    addSearchButtons(person, age, personCard)
+}
+
+function addAge(age, personCard){
     const ageText = document.createElement('h3')
-    const age = "UPDATE WITH CALCULATION"
     ageText.textContent = `Age ${age}`
+    personCard.append(ageText)
+}
 
+function addSearchButtons(person, age, personCard){
+    const buttonSection = document.createElement('section')
+    buttonSection.classList.add('button-section')
+
+    const searchByAgeButton = document.createElement('button')
+    searchByAgeButton.addEventListener('click', (event) => openAgeSearchWindow(event, person, age))
+    searchByAgeButton.innerText = `Find gift ideas for Age ${age}`
+    
+    const searchByRelationshipButton = document.createElement('button')
+    searchByRelationshipButton.addEventListener('click', (event) => openRelationshipSearchWindow(event, person))
+    searchByRelationshipButton.innerText = `Find gift ideas for your ${person.relationship}`
+    
+    buttonSection.append(searchByAgeButton, searchByRelationshipButton)
+    personCard.append(buttonSection)
+}
+
+function openAgeSearchWindow(event, person, age){
+    console.log('clicked search by age button')
+    window.open(`https://www.amazon.com/s?k=gifts+for+${age}+year+old+${person.gender}&ref=nb_sb_noss`, '_blank')
+}
+
+function openRelationshipSearchWindow(event, person){
+    console.log('clicked search by relationship button')
+    window.open(`https://www.amazon.com/s?k=gifts+for+${person.relationship}&ref=nb_sb_noss_1`, '_blank')
+}
+
+function showDetailsCard(event, person){
+    console.log("div clicked")
     const detailPopup = document.createElement('span')
     detailPopup.classList.add('popup-info')
     detailPopup.setAttribute('id', `person-${person.id}-info`)
@@ -94,13 +162,9 @@ function displayPerson(person){
     address.textContent = `${person.mailing_address1}, ${person.mailing_address2}`
     cityState.textContent = `${person.mailing_city}, ${person.mailing_state} ${person.mailing_zip}`
     
-    const gender = document.createElement('p')
-    gender.textContent = person.gender
-
-    personCard.append(title, gender, ageText, birthday, address, cityState)
-    lovedOnesSection.append(personCard)
+    detailPopup.append(birthday, address, cityState)
 }
 
 
 
-// https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png
+

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Profile Page</title>
-    <script defer src="profile.js"></script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script defer src="profile.js" type="module"></script>
+    <link rel="stylesheet" href="profile.css" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 </head>
 <body>
     <header>
@@ -15,22 +15,21 @@
         <button id="logout-button">Logout</button>
     </header>
     <section>
-        <p>Add a new person:</p>
+        <button id="add-person-collapsible">Add a new person:</button>
         <form method="POST" id="new-person-form">
             <input type="text" name="name" placeholder="Name">
             <input type="text" name="relationship" placeholder="Relationship to you">
             <input type="text" name="birthday" placeholder="YYYY-MM-DD">
-            <select name="gender" placeholder="gender">
-                <option>n/a</option>
-                <option>Male</option>
-                <option>Female</option>
+            <select name="gender">
+                <option value="n/a">n/a</option>
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
             </select>
             <input type="text" name="mailing_address1" placeholder="Mailing Address">
             <input type="text" name="mailing_address2" placeholder="Apt / Building">
             <input type="text" name="mailing_city" placeholder="City">
             <input type="text" name="mailing_state" placeholder="State">
             <input type="text" name="mailing_zip" placeholder="Zip Code">
-            <input type="text" name="image_url" placeholder="link to your favorite picture of them!">
             <input type="submit" value="Add Person!">
         </form>
     </section>

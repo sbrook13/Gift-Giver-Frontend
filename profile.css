@@ -1,0 +1,122 @@
+@import '/meyer-reset.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  background-image: url('https://itsshowtimenj.files.wordpress.com/2013/10/abstractdesktop-astounding-wood-background-wallpaper-backgrounds.jpg')
+}
+
+header {
+  width: 100%;
+  padding: 3rem;
+  margin: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  background-color: rgba(255,255,255,20%);
+  color: white;
+  border-radius: 5px;
+}
+
+.active, #logout-button:hover {
+  background-color: rgba(255, 255, 255, .4);
+}
+
+div {
+  background-color: #ffe066;
+  margin: 20px;
+  padding: 5px 15px;
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, .5);
+  width: 30%;
+  min-width: 300px;
+}
+
+#add-person-collapsible {
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, .4);
+  color: white;
+  text-align: left;
+  border-style: none;
+}
+.active, #add-person-collapsible:hover {
+  background-color: rgba(255, 255, 255, .4);
+}
+
+#new-person-form {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, .4);
+  max-height: 0;
+  transition: max-height 0.2s ease-out;
+}
+
+
+#loved-ones {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#loved-ones-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* The actual popup (appears on top) */
+.person-card .popup-info {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .person-card .popup-info::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class when clicking on the popup container (hide and show the popup) */
+  .person-card .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }

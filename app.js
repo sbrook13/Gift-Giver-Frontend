@@ -20,9 +20,7 @@ function loginUser(event){
     const username = loginInfo.get('username')
     const password = loginInfo.get('password')
     const user = { username, password }
-    console.log(user)
-    getToken(user) 
-       
+    getToken(user)  
 }
 
 function getToken(user){
@@ -34,40 +32,27 @@ function getToken(user){
         },
         body: JSON.stringify(user)
     })
-        .then(response => response.json())
+        .then(parseJSON)
         .then(result => {
-            console.log(result.token)
+            if(result.errors){
+                throw new Error(result.errors[0])
+            }
             localStorage.setItem('token', result.token)
             showProfile()
         })
-        // .then(response => {
-        //     if(response.ok){
-        //         result = parseJSON(response)
-        //         console.log(result)
-        //         localStorage.setItem('token', result.token)
-        //         showProfile()
-        //     } else {
-        //         console.log(response)
-        //         result = parseJSON(response)
-        //         console.log(result)
-        //         const errorMessage = document.querySelector('#login-error-message')
-        //         errorMessage.innerText = 'Please login to proceed'
-        //     }
+        .catch(handleError)
     }
 
 function showProfile(){
     fetch(profileURL, { headers: auth_headers })
-        .then(response => {
-            if(response.ok){
-                window.location.href = '/profile.html'
-            } else {
-                console.log(response)
-                result = parseJSON(response)
-                console.log(result)
-                const errorMessage = document.querySelector('#login-error-message')
-                errorMessage.innerText = 'Incorrect Username or Password'
+        .then(parseJSON)
+        .then(result => {
+            if(result.erros){
+                throw new Error('Incorrect Username or Password')
             }
+            window.location.href = '/profile.html'  
         })
+        .catch(handleError)
 }
 
 function parseJSON(response) {
@@ -82,7 +67,7 @@ function createUser(event){
     let username = formData.get('username')
     username = username.toLowerCase()
     const password = formData.get('password')
-    const user = {"user":{name, email, username, password}}
+    const user = {user:{name, email, username, password}}
     console.log(user)
     
     fetch(usersURL, {
@@ -91,13 +76,54 @@ function createUser(event){
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify( user )
     })
         .then(parseJSON)
-        .then(newUserToken)
-        .then(showProfile)
+        .then(newUser => {
+            if(newUser.errors){
+                throw new Error(newUser.errors[0])
+            }
+            newUserToken(newUser.token)
+            showProfile()
+        })
+        .catch(handleError)
 }
 
-function newUserToken(newUser){
-    localStorage.setItem('token', newUser.token)
+function newUserToken(token){
+    localStorage.setItem('token', token)
 }
+
+function handleError(error){
+    const errorMessage = document.querySelector('.error-message')
+    errorMessage.innerText = error.message
+    errorMessage.classList.toggle('show')
+}
+
+// var add = require('date-fns/add')
+
+// const age = add(new Date(1985, 8, 23), {
+//     years: 35,
+//     months: 2
+//   })
+// console.log(age)
+
+// const dateTest = document.querySelector('#date-test')
+// dateTest.innerText = `${age}`
+
+const today = new Date()
+const exBday = "1995-08-22"
+
+function calculateAge(exBday, today){
+    var nowMonth = today.getMonth( )+1;
+    const nowYear = today.getFullYear( )
+    let nowDay = today.getDate()
+
+    const birthYear = exBday.split("-")[0]
+    const birthMonth = exBday.split("-")[1]
+    const birthDay = exBday.split("-")[2]
+
+    age = (nowYear-birthYear)+((nowMonth-birthMonth)/12)+((nowDay-birthDay)/365)
+    age = Math.floor(age)
+    console.log(age)
+}
+calculateAge(exBday, today)

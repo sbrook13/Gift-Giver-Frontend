@@ -17,7 +17,8 @@ const auth_headers = {
 function loginUser(event){ 
     event.preventDefault()
     const loginInfo = new FormData(loginForm)
-    const username = loginInfo.get('username')
+    let username = loginInfo.get('username')
+    // username = username.toLowerCase()
     const password = loginInfo.get('password')
     const user = { username, password }
     getToken(user)  
@@ -48,7 +49,7 @@ function showProfile(){
         .then(parseJSON)
         .then(result => {
             if(result.erros){
-                throw new Error('Incorrect Username or Password')
+                throw new Error('❌ Incorrect Username or Password')
             }
             window.location.href = '/profile.html'  
         })
@@ -65,7 +66,7 @@ function createUser(event){
     const name = formData.get('name')
     const email = formData.get('email')
     let username = formData.get('username')
-    username = username.toLowerCase()
+    // username = username.toLowerCase()
     const password = formData.get('password')
     const user = {user:{name, email, username, password}}
     console.log(user)
@@ -99,31 +100,4 @@ function handleError(error){
     errorMessage.classList.toggle('show')
 }
 
-// var add = require('date-fns/add')
 
-// const age = add(new Date(1985, 8, 23), {
-//     years: 35,
-//     months: 2
-//   })
-// console.log(age)
-
-// const dateTest = document.querySelector('#date-test')
-// dateTest.innerText = `${age}`
-
-const today = new Date()
-const exBday = "1995-08-22"
-
-function calculateAge(exBday, today){
-    var nowMonth = today.getMonth( )+1;
-    const nowYear = today.getFullYear( )
-    let nowDay = today.getDate()
-
-    const birthYear = exBday.split("-")[0]
-    const birthMonth = exBday.split("-")[1]
-    const birthDay = exBday.split("-")[2]
-
-    age = (nowYear-birthYear)+((nowMonth-birthMonth)/12)+((nowDay-birthDay)/365)
-    age = Math.floor(age)
-    console.log(age)
-}
-calculateAge(exBday, today)

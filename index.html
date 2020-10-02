@@ -5,33 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Gift Giver</title>
     <script defer src="app.js"></script>
-    <link rel="stylesheet" href="index.css" />
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="meyer-reset" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="app.css" />
 </head>
-<body>
-    <h1>BE THE BEST GIFT GIVER</h1>
-    <section id="login-section">
-        <h2>Login</h2>
-        <form method="POST" id="login-form">
-            <input type="text" name="username" placeholder="username">
-            <input type="password" name="password" placeholder="password">
-            <input type="submit" id="login-button" value="Login">
-        </form>
-    </section>
-    <section id="new-user-section">
-        <h2>New User</h2>
-        <form method="POST" id="create-user">
-            <input type="text" name="name" placeholder="Your Name">
-            <input type="text" name="email" placeholder="Your Email">
-            <input type="text" name="username" placeholder="Create Username">
-            <input type="password" name="password" placeholder="Enter password 6-15 characters">
-            <label class="label-note">Password must be between 6 - 15 characters</label>
-            <input type="submit" value="Create User">
-        </form>
-    </section>
-    <p class="error-message hidden"></p>
+<body class="text-center align-self-center">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column align-self-center">
+        <div class="masthead mb-auto">
+            <div class="col inner"> 
+                <h1>BE THE BEST GIFT GIVER</h1>
+            </div> 
+        </div>
+        <main rol="main" class="inner cover">
+            <div class="mb-auto homepage-form" id="login-section">
+                <h2>Login</h2>
+                <form method="POST" id="login-form" class="form-inline justify-content-center">
+                    <input type="text" name="username" placeholder="username" class="form-control mr-sm-2">
+                    <input type="password" name="password" placeholder="password" class="form-control mr-sm-2">
+                    <input type="submit" id="login-button" value="Login" class="btn btn-primary my-2 my-sm-0">
+                </form>
+            </div> 
+            <div class="w-25 p-3 mx-auto homepage-form" id="new-user-section">
+                <h2>New User</h2>
+                <div class="lead">
+                    <form method="POST" id="create-user">
+                            <input type="text" name="name" placeholder="Your Name" class="form-control">
+                            <input type="text" name="email" placeholder="Your Email" class="form-control">
+                            <input type="text" name="username" placeholder="Create Username" class="form-control">
+                            <input type="password" name="password" placeholder="Enter password 6-15 characters" class="form-control">
+                            <label class="label-note" style="color: white; font-size: 10px">Password must be between 6 - 15 characters</label>
+                            <input type="submit" value="Create User" class="btn btn-md btn-primary btn-block" class="form-control">
+                    </form>
+                    <p class="error-message hidden"></p>
+                </div>
+            </div> 
+        </main>
+        <div class="row">
+            <div class="col">
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            .   ..
+                            </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

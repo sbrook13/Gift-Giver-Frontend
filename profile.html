@@ -5,35 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Profile Page</title>
     <script defer src="profile.js" type="module"></script>
+    <link rel="stylesheet" href="meyer-reset" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="profile.css" />
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 </head>
 <body>
-    <header>
-        <h1 class="welcome"></h1>
-        <p class="instructions"></p>
-        <button id="logout-button">Logout</button>
-    </header>
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+        <header class="d-flex justify-content-between">
+            <div class="">
+                <h1 class="header-text welcome ml-4 mt-10 mb-10">Hello,</h1>
+                <h1 class="header-text profile-header ml-4 mt-10 mb-10"></h1>
+            </div>
+            <button class="logout-button btn btn-primary btn-sm align-items-start">Logout</button>
+        </header>
+    </div>
     <section>
         <button id="add-person-collapsible">Add a new person:</button>
-        <form method="POST" id="new-person-form">
-            <input type="text" name="name" placeholder="Name">
-            <input type="text" name="relationship" placeholder="Relationship to you">
-            <input type="text" name="birthday" placeholder="YYYY-MM-DD">
-            <select name="gender">
-                <option value="n/a">n/a</option>
-                <option value="Male" selected>Male</option>
-                <option value="Female">Female</option>
-            </select>
-            <input type="text" name="mailing_address1" placeholder="Mailing Address">
-            <input type="text" name="mailing_address2" placeholder="Apt / Building">
-            <input type="text" name="mailing_city" placeholder="City">
-            <input type="text" name="mailing_state" placeholder="State">
-            <input type="text" name="mailing_zip" placeholder="Zip Code">
-            <input type="submit" value="Add Person!">
+        <form id="new-person-form" class="hidden">
+            <h2 class="text-center form-title">Who's Birthday Do You Want to Remember?</h2>
+            <div class="form-inline justify-content-center">
+                <input type="text" name="name" placeholder="Name" class="form-control mr-sm-2">
+                <input type="text" name="relationship" placeholder="Relationship to you" class="form-control mr-sm-2">
+                <input type="text" name="birthday" placeholder="YYYY-MM-DD" class="form-control mr-sm-2">
+                <select name="gender" class="form-control mr-sm-2">
+                    <option value="n/a">n/a</option>
+                    <option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <label class="label-note form-control-plaintext" style="color: white">Add their address for when it's time to ship! (this can be updated later)</label>
+            </div>
+            <div class="form-inline justify-content-center">
+                <input type="text" name="mailing_address1" placeholder="Mailing Address" class="form-control mr-sm-2">
+                <input type="text" name="mailing_address2" placeholder="Apt / Building" class="form-control mr-sm-2">
+                <input type="text" name="mailing_city" placeholder="City" class="form-control mr-sm-2">
+                <input type="text" name="mailing_state" placeholder="State" class="form-control mr-sm-2">
+                <input type="text" name="mailing_zip" placeholder="Zip Code" class="form-control mr-sm-2">
+            </div>
+            <div class="form-inline justify-content-center">
+                <input type="submit" value="Add Person!" class="btn btn-primary">
+            </div>
         </form>
     </section>
     <section id='loved-ones-section'></section>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

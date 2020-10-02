@@ -1,42 +1,63 @@
-@import url(/meyer-reset.css);
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600;800;900&display=swap");
-* {
-  box-sizing: border-box; }
 
 body {
   font-family: 'Montserrat', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-size: cover;
-  height: 100vh;
   background-repeat: no-repeat;
+  min-height: 100vh;
   background-image: url("https://itsshowtimenj.files.wordpress.com/2013/10/abstractdesktop-astounding-wood-background-wallpaper-backgrounds.jpg"); }
 
-h1 {
+h1, h2 {
   color: white;
-  font-size: 48px;
-  font-weight: 600;
-  margin: 1rem; }
+}
 
-h2 {
-  font-size: 32px;
-  color: white; }
+h1 {
+  font-weight: 600;
+  margin-top: 3rem;
+}
 
 p {
-  font-size: 14px; }
+  color: white; 
+  font-size: 14px; 
+}
+
+div {
+  min-width: 150px;
+}
 
 input {
-  padding: 0.5rem;
-  margin: 0.5rem; }
+  margin: 0.25rem;
+}
 
-button {
-  background-color: white;
-  color: white; }
+.homepage-form {
+  margin: 2rem;
+}
+
+.btn-outline-success {
+  color: white;
+  border-color: white;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #6FA271;
+  border-color: #6FA271;
+}
+
+.active, .btn-primary:hover{
+  color: white;
+  background-color: #577F59;
+  border-color: #577F59;
+}
+
+.error-message{
+  background-color: rgba(255,255,255,50%);
+  color: red;
+  padding: 10px;
+}
 
 .hidden {
-  visibility: hidden; }
+  display: none; }
 
 .show {
   visibility: visible; }

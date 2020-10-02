@@ -5,6 +5,7 @@
 console.log(localStorage.token)
 
 const baseURL = 'http://localhost:3000';
+const userURL = `${baseURL}/users`;
 const profileURL = `${baseURL}/profile`;
 const lovedOnesURL = `${baseURL}/loved_ones`;
 
@@ -19,6 +20,7 @@ const auth_headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${localStorage.token}`
 }
+console.log(auth_headers)
 
 function parseJSON(response) {
     return response.json()
@@ -26,14 +28,14 @@ function parseJSON(response) {
 
 function logoutUser(event){
     localStorage.clear()
-
+    window.location.href = '/'
 }
 
-fetch(profileURL, { auth_headers })
-    .then(parseJSON)
+fetch(profileURL, { headers: auth_headers })
+    .then(response => response.json())
     .then(user => {
-        const welcomeMessage = document.createElement('h2')
         const header = document.querySelector('.welcome')
+        const welcomeMessage = document.createElement('h2')
         welcomeMessage.textContent = `Hello ${user.name}`
         header.append(welcomeMessage)
 

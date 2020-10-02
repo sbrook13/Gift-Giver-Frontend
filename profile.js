@@ -25,6 +25,7 @@ const addPersonButton = document.querySelector('#add-person-collapsible')
 addPersonButton.addEventListener('click', showAddForm);
 
 function showAddForm(){
+    interestSection.classList.add('hidden')
     addPersonForm.classList.toggle('hidden')
     updateForm.classList.add('hidden')
 }
@@ -242,7 +243,6 @@ function showInterestList(lovedOne){
         deleteInterestButton.innerText = "x"
         deleteInterestButton.classList.add('btn', 'btn-primary', 'btn-sm','x-delete')
         listItem.textContent = interest.interest
-        listItem.classList.add(`${interest}-bullet`)
         // deleteInterestButton.addEventListener('click', deleteInterest(interest.id))
         listItem.append(deleteInterestButton)
         listSection.append(listItem)
@@ -250,7 +250,6 @@ function showInterestList(lovedOne){
 }
 
 function deleteInterest(interest_id){
-    console.log(interest_id)
     fetch(`http://localhost:3000/interests/${interest_id}`, {
         method: "DELETE",
         headers: auth_headers
@@ -264,9 +263,9 @@ function getInterestInfo(event, lovedOne){
     const loved_one_id = lovedOne.id
     const newInterest = { interest, loved_one_id }
     interestForm.reset()
-    showInterestList(lovedOne)
     location.reload()
-    saveInterest(newInterest)
+    setTimeout(showInterestSection(event, lovedOne), 3000)
+    setTimeout(saveInterest(newInterest), 3000)
 }
 
 function saveInterest(newInterest){
@@ -313,19 +312,6 @@ function showAddress(lovedOne, detailPopup){
     ${city}${state}${zip}`
     detailPopup.append(address)
 }
-
-// function showInterests(lovedOne, personCard, detailPopup){
-//     lovedOne.interest.forEach(interest => {
-        
-//     })
-// }
-
-    // const interestSection = detailPopup.querySelector('.interest-section')
-    // lovedOne.interests.forEach(interest => {
-    //     const interestElement = document.createElement('p')
-    //     interestElement.textContent = interest.name
-    //     interestSection.append(interestElement)
-    // })
 
 function createUpdateButton(lovedOne, detailPopup){
     const updateButton = document.createElement('button')

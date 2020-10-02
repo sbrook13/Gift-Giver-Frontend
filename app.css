@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap');
 
 body {
   font-family: 'Montserrat', sans-serif;
@@ -7,13 +8,16 @@ body {
   min-height: 100vh;
   background-image: url("https://itsshowtimenj.files.wordpress.com/2013/10/abstractdesktop-astounding-wood-background-wallpaper-backgrounds.jpg"); }
 
-h1, h2 {
+h2 {
   color: white;
 }
 
 h1 {
-  font-weight: 600;
-  margin-top: 3rem;
+  font-size: 60px;
+  color: rgba(255,255,255,60%);
+  font-family: 'Bowlby One SC', cursive;
+  margin-bottom: -1rem;
+  margin-top: 0rem;
 }
 
 p {
@@ -27,6 +31,54 @@ div {
 
 input {
   margin: 0.25rem;
+}
+
+.package-icon{
+width:150px;
+}
+
+.bounce {
+  display: inline-block;
+  position: relative;
+  -moz-animation: bounce 0.5s infinite linear;
+  -o-animation: bounce 0.5s infinite linear;
+  -webkit-animation: bounce 0.5s infinite linear;
+  animation: bounce 0.5s infinite linear;
+  color:000;
+}
+.homepage-header{
+  margin-top: 2rem;
+}
+
+@-webkit-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-moz-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-o-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@-ms-keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
+}
+@keyframes bounce {
+    0% { top: 0; }
+    50% { top: -0.2em; }
+    70% { top: -0.3em; }
+    100% { top: 0; }
 }
 
 .homepage-form {

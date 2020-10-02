@@ -39,6 +39,11 @@ p {
   font-size: 16px
 }
 
+li {
+  color:white;
+  font-size:18px;
+}
+
 input, select {
   max-width: 200px;
 }
@@ -53,7 +58,8 @@ input, select {
 }
 
 .search-button {
-  background-color: rgba(255,255,255,20%);
+  background-color: rgba(0,0,0,20%);
+  border-color: rgba(255,255,255,20%);
 }
 
 .logout-button {
@@ -61,13 +67,35 @@ input, select {
   border-color: white;
   height: 2rem;
 }
+.active, #logout-button:hover {
+  background-color: rgba(255, 255, 255, .4);
+}
 
 .update-button {
   margin: 0rem 1rem 1rem 0rem;
 }
 
-.active, #logout-button:hover {
-  background-color: rgba(255, 255, 255, .4);
+.delete-button {
+  background-color: rgba(255,0,0,.3);
+  border-color: rgba(255,0,0,.5);
+  color: white;
+  font-size: 10px;
+  padding: .25rem;
+}
+
+.x-delete {
+  background-color: rgba(255,255,255,.2);
+  border-color: rgba(255,255,255,.4);
+  color: white;
+  font-size: 10px;
+  margin: .5rem;
+  padding: .1rem
+}
+
+.active, .delete-button:hover, .x-delete:hover {
+  color:white;
+  background-color:red;
+  border-color: red;
 }
 
 .person-card {
@@ -82,8 +110,8 @@ input, select {
 }
 
 .person-card:hover {
-  -webkit-transform: rotate(5deg);
-  transform: rotate(5deg);
+  -webkit-transform: rotate(3deg);
+  transform: rotate(3deg);
 }
 
 .active, #div:hover {
@@ -105,6 +133,21 @@ input, select {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.modal .container {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  width: 200px;
+ }
+ 
+.modal .body {
+  box-shadow: 5px 10px #888888;
+  display: inline-block;
+  background-color: white;
+  border: 1px solid black; 
+  padding: 10px;
+}
+
 #add-person-collapsible {
   width: 100%;
   padding: 10px;
@@ -118,9 +161,10 @@ input, select {
 
 .form-title {
   color: rgba(255,255,255,70%);
+  font-weight: 600;
 }
 
-#new-person-form {
+.form, #interests-section {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem
 }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <script defer src="profile.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1 class="welcome"></h1>
+        <p class="instructions"></p>
+        <button id="logout-button">Logout</button>
+    </header>
+    <section>
+        <p>Add a new person:</p>
+        <form method="POST" id="new-person-form">
+            <input type="text" name="name" placeholder="Name">
+            <input type="text" name="relationship" placeholder="Relationship to you">
+            <input type="text" name="birthday" placeholder="YYYY-MM-DD">
+            <select name="gender" placeholder="gender">
+                <option>n/a</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+            <input type="text" name="mailing_address1" placeholder="Mailing Address">
+            <input type="text" name="mailing_address2" placeholder="Apt / Building">
+            <input type="text" name="mailing_city" placeholder="City">
+            <input type="text" name="mailing_state" placeholder="State">
+            <input type="text" name="mailing_zip" placeholder="Zip Code">
+            <input type="text" name="image_url" placeholder="link to your favorite picture of them!">
+            <input type="submit" value="Add Person!">
+        </form>
+    </section>
+    <section id='loved-ones-section'></section>
+</body>
+</html>

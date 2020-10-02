@@ -26,11 +26,13 @@ addPersonButton.addEventListener('click', showAddForm);
 
 function showAddForm(){
     addPersonForm.classList.toggle('hidden')
+    updateForm.classList.add('hidden')
 }
 
 const addPersonForm = document.querySelector('#new-person-form')
 addPersonForm.addEventListener('submit', getPersonInfo);
 
+const updateForm = document.querySelector('#update-form')
 const lovedOnesSection = document.querySelector('#loved-ones-section')
 
 function parseJSON(response) {
@@ -159,7 +161,7 @@ function createDetailsCard(lovedOne, personCard){
     createAddressElement(detailPopup)
     createInterestSection(detailPopup)
     createUpdateButton(lovedOne, detailPopup)
-
+    addDeleteButton(lovedOne, detailPopup)
     personCard.append(detailPopup)
     personCard.addEventListener('click', event => showDetailsCard(event, lovedOne, detailPopup))
 }
@@ -195,7 +197,20 @@ function showDetailsCard(event, lovedOne, detailPopup){
     showBirthday(lovedOne, detailPopup)
     showGender(lovedOne, detailPopup)
     showAddress(lovedOne, detailPopup)
-    showInterests(lovedOne, detailPopup)
+
+    // showInterests(lovedOne, detailPopup)
+}
+
+function addDeleteButton(lovedOne, detailPopup){
+    const deleteButton = document.createElement('button')
+    deleteButton.classList.add('btn', 'btn-primary', 'btn-sm', 'delete-button')
+    deleteButton.innerText = "delete x"
+    detailPopup.append(deleteButton)
+    deleteButton.addEventListener('click', event => deleteLovedOne(event, lovedOne))
+}
+
+function deleteLovedOne(event, lovedOne){
+
 }
 
 function showBirthday(lovedOne, detailPopup){
@@ -218,20 +233,17 @@ function showAddress(lovedOne, detailPopup){
     if (address1 === null){ address1 = "unknown" }
     
     let address2 = lovedOne.mailing_address2
-    if (address2 === null){ 
+    if (address2 === ""){ 
         address2 = ""
     }else{
         address2 = `, ${lovedOne.mailing_address2}`
     }
 
     let city = lovedOne.mailing_city
-    if (city === null){ city = ""}
-
     let state = lovedOne.mailing_state
-    if (state === null){ state = ""}else{state = `, ${lovedOne.mailing_state} `}
+    if (state === ""){ state = ""}else{state = `, ${lovedOne.mailing_state} `}
 
     let zip = lovedOne.mailing_zip
-    if (zip === null){ zip = ""}
 
     address.innerText = `Mailing Address: 
     ${address1}${address2}`
@@ -259,46 +271,62 @@ function createUpdateButton(lovedOne, detailPopup){
     updateButton.setAttribute("data-toggle", "modal")
     updateButton.setAttribute("data-target","#updateLovedOneInfo")
     updateButton.innerText = "Update Information"
-    createModal(lovedOne, detailPopup)
-    // updateButton.addEventListener('click', event => openUpdateModal(event, lovedOne, detailPopup))
+    updateButton.addEventListener('click', event => showUpdateForm(event, lovedOne, detailPopup))
     detailPopup.append(updateButton)
 }
 
-function createModal(lovedOne, detailPopup){
-    const updatePersonModal = document.createElement('div')
-    updatePersonModal.classList.add('modal')
-    updatePersonModal.classList.add('fade')
-    updatePersonModal.setAttribute("id", "updateLovedOneInfo")
-    updatePersonModal.setAttribute('tabIndex','-1')
-    updatePersonModal.role= 'dialog'
-    updatePersonModal.setAttribute('aria-labelledby','exampleModalCenterTitle')
-    updatePersonModal.setAttribute('aria-hidden','true')
-    updatePersonModal.innerHTML = `
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            ...
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-        </div>
-    </div>
+function showUpdateForm(event, lovedOne){
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    const updateFormTitle = updateForm.querySelector('.form-title')
+    updateFormTitle.innerText = `Update ${lovedOne.name}'s Info:`
 
-    `   
-    detailPopup.append(updatePersonModal)
+    const relationshipField = updateForm.querySelector('#relationship-field')
+    relationshipField.value = `${lovedOne.relationship}`
+    const birthdayField = updateForm.querySelector('#birthday-field')
+    birthdayField.value = `${lovedOne.birthday}`
+    const genderField = updateForm.querySelector('#gender-field')
+    genderField.value = `${lovedOne.gender}`
+    const address1Field = updateForm.querySelector('#address1-field')
+    address1Field.value = `${lovedOne.mailing_address1}`
+    const address2Field = updateForm.querySelector('#address2-field')
+    address2Field.value = `${lovedOne.mailing_address2}`
+    const cityField = updateForm.querySelector('#city-field')
+    cityField.value = `${lovedOne.mailing_city}`
+    const stateField = updateForm.querySelector('#state-field')
+    stateField.value = `${lovedOne.mailing_state}`
+    const zipField = updateForm.querySelector('#zip-field')
+    zipField.value = `${lovedOne.mailing_zip}`
+
+    updateForm.classList.remove('hidden')
+    addPersonForm.classList.add('hidden')
+    updateForm.addEventListener('submit', event => getLovedOneUpdates(event, lovedOne))
 }
 
+function getLovedOneUpdates(event, lovedOne){
+    event.preventDefault()
+    const formData = new FormData(updateForm)
+    const id = lovedOne.id
+    const name = lovedOne.name
+    const relationship = formData.get('relationship')
+    const birthday = formData.get('birthday')
+    const gender = formData.get('gender')
+    const mailing_address1 = formData.get('mailing_address1')
+    const mailing_address2 = formData.get('mailing_address2')
+    const mailing_city = formData.get('mailing_city')
+    const mailing_state = formData.get('mailing_state')
+    const mailing_zip = formData.get('mailing_zip')
+    const updatedLovedOne = { id, name, relationship, birthday, gender, mailing_address1, mailing_address2, mailing_city, mailing_state, mailing_zip}
+    storeUpdates(updatedLovedOne)
+}
 
-
+function storeUpdates(updatedLovedOne){
+    fetch(`http://localhost:3000/loved_ones/${updatedLovedOne.id}`, {
+        method: "PUT",
+        headers: auth_headers, 
+        body: JSON.stringify(updatedLovedOne)
+    })
+    location.reload();
+}
 
 
 

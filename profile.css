@@ -39,6 +39,11 @@ p {
   font-size: 16px
 }
 
+li {
+  color:white;
+  font-size:18px;
+}
+
 input, select {
   max-width: 200px;
 }
@@ -53,7 +58,8 @@ input, select {
 }
 
 .search-button {
-  background-color: rgba(255,255,255,20%);
+  background-color: rgba(0,0,0,20%);
+  border-color: rgba(255,255,255,20%);
 }
 
 .logout-button {
@@ -70,21 +76,27 @@ input, select {
 }
 
 .delete-button {
-  background-color: rgba(255,255,255,20%);
-  border-color: red;
-  color: red;
+  background-color: rgba(255,0,0,.3);
+  border-color: rgba(255,0,0,.5);
+  color: white;
   font-size: 10px;
   padding: .25rem;
-  margin: 0rem 1rem 1rem 0rem;
 }
 
-.active, .delete-button:hover {
+.x-delete {
+  background-color: rgba(255,255,255,.2);
+  border-color: rgba(255,255,255,.4);
+  color: white;
+  font-size: 10px;
+  margin: .5rem;
+  padding: .1rem
+}
+
+.active, .delete-button:hover, .x-delete:hover {
   color:white;
   background-color:red;
   border-color: red;
 }
-
-
 
 .person-card {
   background-color: #ffe066;
@@ -149,9 +161,10 @@ input, select {
 
 .form-title {
   color: rgba(255,255,255,70%);
+  font-weight: 600;
 }
 
-#new-person-form {
+.form, #interests-section {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem
 }

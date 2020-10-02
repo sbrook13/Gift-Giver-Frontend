@@ -21,7 +21,7 @@
     </div>
     <section>
         <button id="add-person-collapsible">Click here to add a new person:</button>
-        <form id="new-person-form" class="hidden">
+        <form id="new-person-form" class="hidden form">
             <h2 class="text-center form-title">Who's Birthday Do You Want to Remember?</h2>
             <div class="form-inline justify-content-center">
                 <input type="text" name="name" placeholder="Name" class="form-control mr-sm-2">
@@ -51,7 +51,7 @@
         </form>
     </section>
     <section>
-        <form id="update-form" class="hidden">
+        <form id="update-form" class="hidden form">
             <h2 class="text-center form-title"></h2>
             <div class="form-inline justify-content-center">
                 <input type="text" name="relationship" id="relationship-field" placeholder="Relationship to you" class="form-control mr-sm-2">
@@ -78,6 +78,21 @@
                 <input type="submit" value="Update" class="btn btn-primary">
             </div>
         </form>
+    </section>
+    <section id="interests-section" class="hidden">
+        <h2 class="text-center form-title interest-section-title"></h2>
+        <div class="flex-column">
+            <form id="interest-form" class="form">
+                <div class="form-inline justify-content-center">
+                    <input type="text" name="interest" id="interest-field" placeholder="ex: Batman" class="form-control mr-sm-2" required="required">
+                <div class="form-inline justify-content-center">
+                    <input type="submit" value="Add Interest!" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+        <div class="d-flex">
+            <ul id="list-interests" class="justify-content-center"></ul>
+        </div>
     </section>
     <section id='loved-ones-section'></section>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

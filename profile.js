@@ -67,8 +67,8 @@ function getPersonInfo(event){
     const mailing_state = formData.get('mailing_state')
     const mailing_zip = formData.get('mailing_zip')
     const lovedOne = { name, relationship, birthday, gender, mailing_address1, mailing_address2, mailing_city, mailing_state, mailing_zip}
+    addPersonForm.reset()
     persistPerson(lovedOne)
-
 }
 
 function persistPerson(lovedOne){
@@ -155,13 +155,16 @@ function createDetailsCard(lovedOne, personCard){
     const detailPopup = document.createElement('span')
     detailPopup.classList.add('hidden', 'detail-section')
     detailPopup.setAttribute('id', `person-${lovedOne.id}-info`)
+    const buttonSection = document.createElement('div')
+    buttonSection.classList.add('justify-content-between', 'd-flex', 'my-2')
+    detailPopup.append(buttonSection)
     
     createBirthdayElement(detailPopup)
     createGenderElement(detailPopup)
     createAddressElement(detailPopup)
-    createInterestSection(detailPopup)
     createUpdateButton(lovedOne, detailPopup)
-    addDeleteButton(lovedOne, detailPopup)
+    seeInterestsButton(lovedOne, buttonSection)
+    addDeleteButton(lovedOne, buttonSection)
     personCard.append(detailPopup)
     personCard.addEventListener('click', event => showDetailsCard(event, lovedOne, detailPopup))
 }
@@ -181,14 +184,7 @@ function createGenderElement(detailPopup){
 function createAddressElement(detailPopup){
     const address = document.createElement('p')
     address.setAttribute('id','address')
-    const cityState = document.createElement('p')
-    cityState.setAttribute('id','city-state')
-    detailPopup.append(address, cityState)
-}
-function createInterestSection(detailPopup){
-    const interestSection = document.createElement('div')
-    interestSection.classList.add('interest-section')
-    detailPopup.append(interestSection)
+    detailPopup.append(address)
 }
 
 function showDetailsCard(event, lovedOne, detailPopup){
@@ -197,20 +193,88 @@ function showDetailsCard(event, lovedOne, detailPopup){
     showBirthday(lovedOne, detailPopup)
     showGender(lovedOne, detailPopup)
     showAddress(lovedOne, detailPopup)
-
-    // showInterests(lovedOne, detailPopup)
 }
 
 function addDeleteButton(lovedOne, detailPopup){
     const deleteButton = document.createElement('button')
-    deleteButton.classList.add('btn', 'btn-primary', 'btn-sm', 'delete-button')
+    deleteButton.classList.add('btn', 'btn-primary', 'btn-sm', 'delete-button', 'align-middle')
     deleteButton.innerText = "delete x"
     detailPopup.append(deleteButton)
     deleteButton.addEventListener('click', event => deleteLovedOne(event, lovedOne))
 }
 
 function deleteLovedOne(event, lovedOne){
+    fetch(`http://localhost:3000/loved_ones/${lovedOne.id}`, {
+        method: "DELETE",
+        headers: auth_headers
+    })
+    .then(setTimeout(function(){location.reload()}, 3000))
+}
 
+const interestSection = document.querySelector('#interests-section')
+const $interestForm = document.querySelector('#interest-form')
+
+function seeInterestsButton(lovedOne, detailPopup){
+    const seeInterestButton = document.createElement('button')
+    seeInterestButton.classList.add('btn', 'btn-primary', 'btn-sm')
+    seeInterestButton.innerText = "See Interests"
+    detailPopup.append(seeInterestButton)
+    seeInterestButton.addEventListener('click', event => showInterestSection(event, lovedOne))
+}
+const interestForm = interestSection.querySelector('#interest-form')
+
+function showInterestSection(event, lovedOne){
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    const formTitle = document.querySelector('.interest-section-title')
+    formTitle.innerText = `What does ${lovedOne.name} love?`
+    showInterestList(lovedOne)
+    interestSection.classList.remove('hidden')
+    updateForm.classList.add('hidden')
+    addPersonForm.classList.add('hidden')
+    interestForm.addEventListener('submit', event => getInterestInfo(event, lovedOne))
+}
+
+function showInterestList(lovedOne){
+    const listSection = document.querySelector('#list-interests')
+    lovedOne.interests.forEach(interest =>{
+        const listItem = document.createElement('li')
+        const deleteInterestButton = document.createElement('button')
+        deleteInterestButton.innerText = "x"
+        deleteInterestButton.classList.add('btn', 'btn-primary', 'btn-sm','x-delete')
+        listItem.textContent = interest.interest
+        listItem.classList.add(`${interest}-bullet`)
+        // deleteInterestButton.addEventListener('click', deleteInterest(interest.id))
+        listItem.append(deleteInterestButton)
+        listSection.append(listItem)
+    })
+}
+
+function deleteInterest(interest_id){
+    console.log(interest_id)
+    fetch(`http://localhost:3000/interests/${interest_id}`, {
+        method: "DELETE",
+        headers: auth_headers
+    })
+}
+
+function getInterestInfo(event, lovedOne){
+    event.preventDefault()
+    const formData = new FormData(interestForm)
+    const interest = formData.get('interest')
+    const loved_one_id = lovedOne.id
+    const newInterest = { interest, loved_one_id }
+    interestForm.reset()
+    showInterestList(lovedOne)
+    location.reload()
+    saveInterest(newInterest)
+}
+
+function saveInterest(newInterest){
+    fetch(`http://localhost:3000/interests`, {
+        method: "POST",
+        headers: auth_headers,
+        body: JSON.stringify(newInterest)
+    })
 }
 
 function showBirthday(lovedOne, detailPopup){
@@ -227,7 +291,6 @@ function showGender(lovedOne, detailPopup){
 
 function showAddress(lovedOne, detailPopup){
     const address = detailPopup.querySelector('#address')
-    const cityState = detailPopup.querySelector('#city-state')
 
     let address1 = lovedOne.mailing_address1
     if (address1 === null){ address1 = "unknown" }
@@ -246,9 +309,9 @@ function showAddress(lovedOne, detailPopup){
     let zip = lovedOne.mailing_zip
 
     address.innerText = `Mailing Address: 
-    ${address1}${address2}`
-    cityState.innerText = `${city}${state}${zip}`
-    detailPopup.append(address, cityState)
+    ${address1}${address2}
+    ${city}${state}${zip}`
+    detailPopup.append(address)
 }
 
 // function showInterests(lovedOne, personCard, detailPopup){
@@ -271,7 +334,7 @@ function createUpdateButton(lovedOne, detailPopup){
     updateButton.setAttribute("data-toggle", "modal")
     updateButton.setAttribute("data-target","#updateLovedOneInfo")
     updateButton.innerText = "Update Information"
-    updateButton.addEventListener('click', event => showUpdateForm(event, lovedOne, detailPopup))
+    updateButton.addEventListener('click', event => showUpdateForm(event, lovedOne))
     detailPopup.append(updateButton)
 }
 
@@ -325,7 +388,7 @@ function storeUpdates(updatedLovedOne){
         headers: auth_headers, 
         body: JSON.stringify(updatedLovedOne)
     })
-    location.reload();
+    .then(setTimeout(function(){location.reload()}, 3000))
 }
 
 

@@ -64,7 +64,50 @@ Gift Giver is a web application that allows a logged in user to record loved one
 ## Example Code 
 
 ```
-example
+function showAddForm(){
+    interestSection.classList.add('hidden')
+    addPersonForm.classList.toggle('hidden')
+    updateForm.classList.add('hidden')
+}
+
+const addPersonForm = document.querySelector('#new-person-form')
+addPersonForm.addEventListener('submit', getPersonInfo);
+
+function getPersonInfo(event){
+    event.preventDefault()
+    const formData = new FormData(addPersonForm)
+    const name = formData.get('name')
+    const relationship = formData.get('relationship')
+    const birthday = formData.get('birthday')
+    const gender = formData.get('gender')
+    const mailing_address1 = formData.get('mailing_address1')
+    const mailing_address2 = formData.get('mailing_address2')
+    const mailing_city = formData.get('mailing_city')
+    const mailing_state = formData.get('mailing_state')
+    const mailing_zip = formData.get('mailing_zip')
+    const lovedOne = { name, relationship, birthday, gender, mailing_address1, mailing_address2, mailing_city, mailing_state, mailing_zip}
+    addPersonForm.reset()
+    persistPerson(lovedOne)
+}
+```
+
+```
+function calculateAge(lovedOne, personCard){
+    const today = new Date()
+    const bday = new Date(lovedOne.birthday)
+    const ageDif = today - bday
+    const ageDate = new Date(ageDif)
+    const age = Math.abs(ageDate.getUTCFullYear()-1970)
+    addAge(age, personCard)
+    addSearchButtons(lovedOne, age, personCard)
+}
+```
+
+```
+function logoutUser(){
+    localStorage.clear()
+    window.location.href = '/'
+}
 ```
 
 ## Technology Used

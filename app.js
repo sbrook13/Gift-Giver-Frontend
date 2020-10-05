@@ -15,6 +15,7 @@ const auth_headers = {
 }
 
 function loginUser(event){ 
+    
     event.preventDefault()
     const loginInfo = new FormData(loginForm)
     let username = loginInfo.get('username')

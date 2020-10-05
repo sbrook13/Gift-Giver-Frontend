@@ -4,7 +4,7 @@ An app to help you be the best Gift Giver out there - on top of all of your love
 
 # Table Of Contents 
 - [Description](https://github.com/sbrook13/Gift-Giver-Frontend#description)
-- [How It Works (gifs)](https://github.com/sbrook13/Gift-Giver-Frontend#howitworks)
+- [How It Works (gifs)](https://github.com/sbrook13/Gift-Giver-Frontend#how-it-works)
 - [Example Code](https://github.com/sbrook13/Gift-Giver-Frontend#example-code)
 - [Technology Used](https://github.com/sbrook13/Gift-Giver-Frontend#technology-used)
 - [Setting up for the Application](https://github.com/sbrook13/Gift-Giver-Frontend#setting-up-for-the-application)

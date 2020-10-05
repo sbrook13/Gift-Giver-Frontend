@@ -69,7 +69,6 @@ example
 
 ## Technology Used
 
-- Ruby on Rails backend
 - Javascript
 - HTML
 - CSS

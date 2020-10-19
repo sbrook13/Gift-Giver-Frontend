@@ -24,25 +24,25 @@
             <div class="mb-auto homepage-form" id="login-section">
                 <h2>Login</h2>
                 <form method="POST" id="login-form" class="form-inline justify-content-center">
-                    <input type="text" name="username" placeholder="username" class="form-control mr-sm-2">
-                    <input type="password" name="password" placeholder="password" class="form-control mr-sm-2">
-                    <input type="submit" id="login-button" value="Login" class="btn btn-primary my-2 my-sm-0">
+                    <input type="text" name="username" placeholder="username" class="form-control mr-sm-2" required="required">
+                    <input type="password" name="password" placeholder="password" class="form-control mr-sm-2" required="required">
+                    <input type="submit" id="login-button" value="Login" class="btn btn-primary my-2 my-sm-0" >
                 </form>
             </div> 
             <div class="w-25 p-3 mx-auto homepage-form" id="new-user-section">
                 <h2>New User</h2>
                 <div class="lead">
                     <form method="POST" id="create-user">
-                            <input type="text" name="name" placeholder="Your Name" class="form-control">
-                            <input type="text" name="email" placeholder="Your Email" class="form-control">
-                            <input type="text" name="username" placeholder="Create Username" class="form-control">
-                            <input type="password" name="password" placeholder="Enter password 6-15 characters" class="form-control">
+                            <input type="text" name="name" placeholder="Your Name" class="form-control" required="required">
+                            <input type="text" name="email" placeholder="Your Email" class="form-control" required="required">
+                            <input type="text" name="username" placeholder="Create Username" class="form-control" required="required">
+                            <input type="password" name="password" placeholder="Enter password 6-15 characters" class="form-control" required="required">
                             <label class="label-note" style="color: white; font-size: 10px">Password must be between 6 - 15 characters</label>
                             <input type="submit" value="Create User" class="btn btn-md btn-primary btn-block" class="form-control">
                     </form>
-                    <p class="error-message hidden"></p>
                 </div>
             </div> 
+            <p class="error-message hidden"></p>
         </main>
         
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

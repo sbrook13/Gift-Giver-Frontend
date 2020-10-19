@@ -49,7 +49,7 @@ function getLovedOnes(lovedOnes){
 
 function getPersonInfo(event){
     event.preventDefault()
-    const lovedOne = handleFormData(event.target, [
+    const lovedOne = handleFormData(event.target, 
         'name',
         'relationship',
         'birthday',
@@ -59,7 +59,7 @@ function getPersonInfo(event){
         'mailing_city',
         'mailing_state',
         'mailing_zip'
-    ])
+    )
     persistPerson(lovedOne)
     event.target.reset()
 }
@@ -196,7 +196,7 @@ const interestForm = interestSection.querySelector('#interest-form')
 function showInterestSection(event, lovedOne){
     window.scrollTo({ top: 0, behavior: 'smooth' })
     const formTitle = document.querySelector('.interest-section-title')
-    formTitle.innerText = `What does ${lovedOne.name} love?`
+    formTitle.innerText = `What does `+`${lovedOne.name}`.charAt(0).toUpperCase() + `${lovedOne.name}`.slice(1)+` love?`
     showInterestList(lovedOne)
     interestSection.classList.remove('hidden')
     updateForm.classList.add('hidden')
@@ -206,24 +206,36 @@ function showInterestSection(event, lovedOne){
 
 function showInterestList(lovedOne){
     const interestsList = document.querySelector('#list-interests')
-    lovedOne.interests.forEach(interest => displayInterest(interest, interestsList))
+    if (lovedOne.interests !== []) {
+        lovedOne.interests.forEach(interest => displayInterest(interest, interestsList))
+    }
 }
 
 function displayInterest(interest, interestsList) {
     const interestListItem = document.createElement('li')
     interestListItem.textContent = interest.interest
+    interestListItem.setAttribute('id', interest.id)
 
     const deleteInterestButton = document.createElement('button')
     deleteInterestButton.innerText = "x"
     deleteInterestButton.classList.add('btn', 'btn-primary', 'btn-sm','x-delete')
-    deleteInterestButton.addEventListener('click', deleteInterest(interest.id))
+    deleteInterestButton.addEventListener('click', () => deleteInterest(event, interest.id))
 
     interestListItem.append(deleteInterestButton)
     interestsList.append(interestListItem)
 }
 
-function deleteInterest(interest_id){
-    authFetch(`${interestsURL}/${interest_id}`, "DELETE", "")
+function deleteInterest(event, interest_id){
+    removeInterest(interest_id)
+    fetch(`${interestsURL}/${interest_id}`, {
+        method: "DELETE",
+        headers: authHeaders,
+    })
+}
+
+function removeInterest(interestId) {
+    const interestToRemove = document.getElementById(`${interestId}`)
+    interestToRemove.remove()
 }
 
 function getInterestInfo(event, lovedOne){
@@ -242,7 +254,7 @@ function saveAndDisplayNewInterest(newInterest){
 
 function displayNewInterest(newInterest) {
     const interestsList = document.querySelector('#list-interests')
-    displayInterest(newInterest, interestsList)
+    displayInterest(newInterest.interest, interestsList)
 }
 
 function showDetail(tag, innerText, parentElement) {
@@ -290,7 +302,7 @@ function createUpdateButton(lovedOne, detailPopup){
 function showUpdateForm(event, lovedOne){
     window.scrollTo({ top: 0, behavior: 'smooth' })
     const updateFormTitle = updateForm.querySelector('.form-title')
-    updateFormTitle.innerText = `Update ${lovedOne.name}'s Info:`
+    updateFormTitle.innerText = `Update `+`${lovedOne.name}`.charAt(0).toUpperCase() + `${lovedOne.name}`.slice(1) +`'s Info:`
 
     const relationshipField = updateForm.querySelector('#relationship-field')
     relationshipField.value = `${lovedOne.relationship}`
@@ -314,9 +326,6 @@ function showUpdateForm(event, lovedOne){
     interestSection.classList.add('hidden')
     updateForm.addEventListener('submit', event => getLovedOneUpdates(event, lovedOne))
 }
-
-
-
 
 function getLovedOneUpdates(event, lovedOne){
     event.preventDefault()
@@ -350,10 +359,11 @@ function createAndDisplayElement(element, attributes, parentElement){
     parentElement.append(newElement)
 }
 
-function handleFormData(form, inputNames){
+function handleFormData(form, ...inputNames){
     const formData = new FormData(form)
-    inputNames.reduce((info, inputName) => {
+    return inputNames.reduce((info, inputName) => {
         info[inputName] = formData.get(inputName)
+        return info
     }, {})
 }
 

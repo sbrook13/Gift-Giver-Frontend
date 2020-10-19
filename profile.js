@@ -1,20 +1,15 @@
-// function showPersonDetails() {
-//     var popup = document.querySelector('#person-2-info');
-//     popup.classList.toggle("show");
-//   }
-
 const baseURL = 'http://localhost:3000';
-const userURL = `${baseURL}/users`;
 const profileURL = `${baseURL}/profile`;
 const lovedOnesURL = `${baseURL}/loved_ones`;
-
-const auth_headers = { 
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${localStorage.token}`
-}
+const interestsURL = `${baseURL}/interests`;
 
 const logoutButton = document.querySelector('.logout-button')
 logoutButton.addEventListener('click', logoutUser)
+
+const authHeaders = { 
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.token}`
+}
 
 function logoutUser(){
     localStorage.clear()
@@ -36,18 +31,15 @@ addPersonForm.addEventListener('submit', getPersonInfo);
 const updateForm = document.querySelector('#update-form')
 const lovedOnesSection = document.querySelector('#loved-ones-section')
 
-function parseJSON(response) {
-    return response.json()
-}
 
-fetch(profileURL, { headers: auth_headers })
+fetch(profileURL, { headers: authHeaders })
     .then(response => response.json())
     .then(user => {
         const welcomeMessage = document.querySelector('.profile-header')
         welcomeMessage.textContent = `${user.name}`.toUpperCase()
     })
 
-fetch(lovedOnesURL, { headers: auth_headers })
+fetch(lovedOnesURL, { headers: authHeaders })
     .then(parseJSON)
     .then(getLovedOnes)
 
@@ -57,34 +49,29 @@ function getLovedOnes(lovedOnes){
 
 function getPersonInfo(event){
     event.preventDefault()
-    const formData = new FormData(addPersonForm)
-    const name = formData.get('name')
-    const relationship = formData.get('relationship')
-    const birthday = formData.get('birthday')
-    const gender = formData.get('gender')
-    const mailing_address1 = formData.get('mailing_address1')
-    const mailing_address2 = formData.get('mailing_address2')
-    const mailing_city = formData.get('mailing_city')
-    const mailing_state = formData.get('mailing_state')
-    const mailing_zip = formData.get('mailing_zip')
-    const lovedOne = { name, relationship, birthday, gender, mailing_address1, mailing_address2, mailing_city, mailing_state, mailing_zip}
-    addPersonForm.reset()
+    const lovedOne = handleFormData(event.target, [
+        'name',
+        'relationship',
+        'birthday',
+        'gender',
+        'mailing_address1',
+        'mailing_address2',
+        'mailing_city',
+        'mailing_state',
+        'mailing_zip'
+    ])
     persistPerson(lovedOne)
+    event.target.reset()
 }
 
 function persistPerson(lovedOne){
-    fetch('http://localhost:3000/loved_ones', {
-        method: "POST",
-        headers: auth_headers, 
-        body: JSON.stringify(lovedOne)
-    })
+    authFetch(lovedOnesURL, "POST", lovedOne)
     displayPerson(lovedOne)
 }
 
 function displayPerson(lovedOne){
     const personCard = document.createElement('div')
     personCard.classList.add('person-card')
-    personCard.setAttribute("id", `person-info-${lovedOne.id}`)
 
     addTitle(lovedOne, personCard)
     calculateAge(lovedOne, personCard)
@@ -96,7 +83,7 @@ function displayPerson(lovedOne){
 
 function addTitle(lovedOne, personCard){
     const title = document.createElement('h2')
-    title.textContent = `${lovedOne.name} - ` + `${lovedOne.relationship}`.charAt(0).toUpperCase() + `${lovedOne.relationship}`.slice(1)
+    title.textContent = `${lovedOne.name}`.charAt(0).toUpperCase() + `${lovedOne.name}`.slice(1) +` - ` + `${lovedOne.relationship}`.charAt(0).toUpperCase() + `${lovedOne.relationship}`.slice(1)
     personCard.append(title)
 }
 
@@ -155,14 +142,14 @@ function addExpand(personCard){
 function createDetailsCard(lovedOne, personCard){
     const detailPopup = document.createElement('span')
     detailPopup.classList.add('hidden', 'detail-section')
-    detailPopup.setAttribute('id', `person-${lovedOne.id}-info`)
     const buttonSection = document.createElement('div')
     buttonSection.classList.add('justify-content-between', 'd-flex', 'my-2')
     detailPopup.append(buttonSection)
     
-    createBirthdayElement(detailPopup)
-    createGenderElement(detailPopup)
-    createAddressElement(detailPopup)
+    createAndDisplayElement('p', {id: 'birthday' }, detailPopup)
+    createAndDisplayElement('p', {id: 'gender' }, detailPopup)
+    createAndDisplayElement('p', {id: 'address' }, detailPopup)
+
     createUpdateButton(lovedOne, detailPopup)
     seeInterestsButton(lovedOne, buttonSection)
     addDeleteButton(lovedOne, buttonSection)
@@ -170,29 +157,11 @@ function createDetailsCard(lovedOne, personCard){
     personCard.addEventListener('click', event => showDetailsCard(event, lovedOne, detailPopup))
 }
 
-function createBirthdayElement(detailPopup){
-    const birthday = document.createElement('p')
-    birthday.setAttribute('id','birthday')
-    detailPopup.append(birthday)
-}
-
-function createGenderElement(detailPopup){
-    const gender = document.createElement('p')
-    gender.setAttribute('id','gender')
-    detailPopup.append(gender)
-}
-
-function createAddressElement(detailPopup){
-    const address = document.createElement('p')
-    address.setAttribute('id','address')
-    detailPopup.append(address)
-}
-
 function showDetailsCard(event, lovedOne, detailPopup){
     console.log(`${lovedOne.name} div clicked`)
     detailPopup.classList.toggle('hidden')
-    showBirthday(lovedOne, detailPopup)
-    showGender(lovedOne, detailPopup)
+    showDetail('#birthday', `Birthday:  ${lovedOne.birthday}`, detailPopup)
+    showDetail('#gender', `Gender:  ${lovedOne.gender}`, detailPopup)
     showAddress(lovedOne, detailPopup)
 }
 
@@ -207,7 +176,7 @@ function addDeleteButton(lovedOne, detailPopup){
 function deleteLovedOne(event, lovedOne){
     fetch(`http://localhost:3000/loved_ones/${lovedOne.id}`, {
         method: "DELETE",
-        headers: auth_headers
+        headers: authHeaders
     })
     .then(setTimeout(function(){location.reload()}, 3000))
 }
@@ -236,56 +205,50 @@ function showInterestSection(event, lovedOne){
 }
 
 function showInterestList(lovedOne){
-    const listSection = document.querySelector('#list-interests')
-    lovedOne.interests.forEach(interest =>{
-        const listItem = document.createElement('li')
-        const deleteInterestButton = document.createElement('button')
-        deleteInterestButton.innerText = "x"
-        deleteInterestButton.classList.add('btn', 'btn-primary', 'btn-sm','x-delete')
-        listItem.textContent = interest.interest
-        // deleteInterestButton.addEventListener('click', deleteInterest(interest.id))
-        listItem.append(deleteInterestButton)
-        listSection.append(listItem)
-    })
+    const interestsList = document.querySelector('#list-interests')
+    lovedOne.interests.forEach(interest => displayInterest(interest, interestsList))
+}
+
+function displayInterest(interest, interestsList) {
+    const interestListItem = document.createElement('li')
+    interestListItem.textContent = interest.interest
+
+    const deleteInterestButton = document.createElement('button')
+    deleteInterestButton.innerText = "x"
+    deleteInterestButton.classList.add('btn', 'btn-primary', 'btn-sm','x-delete')
+    deleteInterestButton.addEventListener('click', deleteInterest(interest.id))
+
+    interestListItem.append(deleteInterestButton)
+    interestsList.append(interestListItem)
 }
 
 function deleteInterest(interest_id){
-    fetch(`http://localhost:3000/interests/${interest_id}`, {
-        method: "DELETE",
-        headers: auth_headers
-    })
+    authFetch(`${interestsURL}/${interest_id}`, "DELETE", "")
 }
 
 function getInterestInfo(event, lovedOne){
     event.preventDefault()
-    const formData = new FormData(interestForm)
-    const interest = formData.get('interest')
-    const loved_one_id = lovedOne.id
-    const newInterest = { interest, loved_one_id }
-    interestForm.reset()
-    location.reload()
-    setTimeout(showInterestSection(event, lovedOne), 3000)
-    setTimeout(saveInterest(newInterest), 3000)
+    const newInterest = handleFormData(event.target, 'interest')
+    newInterest.loved_one_id = lovedOne.id
+    saveAndDisplayNewInterest(newInterest)
+    event.target.reset()
 }
 
-function saveInterest(newInterest){
-    fetch(`http://localhost:3000/interests`, {
-        method: "POST",
-        headers: auth_headers,
-        body: JSON.stringify(newInterest)
-    })
+function saveAndDisplayNewInterest(newInterest){
+    authFetch(interestsURL, "POST", newInterest)
+        .then(parseJSON)
+        .then(displayNewInterest)
 }
 
-function showBirthday(lovedOne, detailPopup){
-    const birthday = detailPopup.querySelector('#birthday')
-    birthday.innerText = `Birthday:  ${lovedOne.birthday}`
-    detailPopup.append(birthday)
+function displayNewInterest(newInterest) {
+    const interestsList = document.querySelector('#list-interests')
+    displayInterest(newInterest, interestsList)
 }
 
-function showGender(lovedOne, detailPopup){
-    const gender = detailPopup.querySelector('#gender')
-    gender.innerText = `Gender:  ${lovedOne.gender}`
-    detailPopup.append(gender)
+function showDetail(tag, innerText, parentElement) {
+    const element = parentElement.querySelector(tag)
+    element.innerText = innerText
+    parentElement.append(element)
 }
 
 function showAddress(lovedOne, detailPopup){
@@ -348,8 +311,12 @@ function showUpdateForm(event, lovedOne){
 
     updateForm.classList.remove('hidden')
     addPersonForm.classList.add('hidden')
+    interestSection.classList.add('hidden')
     updateForm.addEventListener('submit', event => getLovedOneUpdates(event, lovedOne))
 }
+
+
+
 
 function getLovedOneUpdates(event, lovedOne){
     event.preventDefault()
@@ -371,11 +338,31 @@ function getLovedOneUpdates(event, lovedOne){
 function storeUpdates(updatedLovedOne){
     fetch(`http://localhost:3000/loved_ones/${updatedLovedOne.id}`, {
         method: "PUT",
-        headers: auth_headers, 
+        headers: authHeaders, 
         body: JSON.stringify(updatedLovedOne)
     })
     .then(setTimeout(function(){location.reload()}, 3000))
 }
 
+function createAndDisplayElement(element, attributes, parentElement){
+    const newElement = document.createElement(element)
+    Object.assign(newElement, attributes)
+    parentElement.append(newElement)
+}
 
+function handleFormData(form, inputNames){
+    const formData = new FormData(form)
+    inputNames.reduce((info, inputName) => {
+        info[inputName] = formData.get(inputName)
+    }, {})
+}
 
+function authFetch(url, method, javascriptBody){
+    const body = JSON.stringify(javascriptBody);
+
+    return fetch(url, {method, headers: authHeaders, body });
+}
+
+function parseJSON(response) {
+    return response.json()
+}

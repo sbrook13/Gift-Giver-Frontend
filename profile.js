@@ -226,7 +226,6 @@ function displayInterest(interest, interestsList) {
 }
 
 function deleteInterest(event, interest_id){
-    console.log(interest_id)
     removeInterest(interest_id)
     fetch(`${interestsURL}/${interest_id}`, {
         method: "DELETE",
@@ -236,7 +235,6 @@ function deleteInterest(event, interest_id){
 
 function removeInterest(interestId) {
     const interestToRemove = document.getElementById(`${interestId}`)
-    console.log(interestToRemove)
     interestToRemove.remove()
 }
 
